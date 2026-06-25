@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>quiet-tab</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>quiet-tab</h1>
+
+    <form id="search-form">
+      <input id="search-input" type="text" placeholder="Search or ask..." autofocus />
+      <button type="submit">Go</button>
+    </form>
+
+    <section id="engine-row" aria-label="Search engines"></section>
+    <section id="link-grid" aria-label="Shortcuts"></section>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
