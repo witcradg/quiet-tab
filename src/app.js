@@ -62,7 +62,37 @@ function renderLinks() {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  runSearch(input.value);
+  const raw = input.value;
+
+  // ponytail: sort by prefix length desc so "cl" beats "c"
+  const sorted = [...config.engines].sort((a, b) => (b.prefix || "").length - (a.prefix || "").length);
+  for (const engine of sorted) {
+    const p = engine.prefix;
+    if (p && raw.startsWith(p + " ")) {
+      runSearch(raw.slice(p.length + 1), engine.id);
+      return;
+    }
+  }
+
+  runSearch(raw);
+});
+
+document.addEventListener("keydown", (event) => {
+  const tag = document.activeElement?.tagName;
+  const inInput = tag === "INPUT" || tag === "TEXTAREA" || document.activeElement?.isContentEditable;
+
+  if (event.key === "/" && !inInput && !event.altKey && !event.ctrlKey && !event.metaKey) {
+    event.preventDefault();
+    input.focus();
+    return;
+  }
+
+  if (!event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  const idx = parseInt(event.key, 10);
+  if (idx >= 1 && idx <= 9 && config.links[idx - 1]) {
+    event.preventDefault();
+    window.location.href = config.links[idx - 1].url;
+  }
 });
 
 renderEngines();
