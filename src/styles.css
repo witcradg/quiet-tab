@@ -101,6 +101,16 @@ button {
   line-height: 1;
 }
 
+img.tile-icon {
+  width: 2rem;
+  height: 2rem;
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  img.tile-icon { filter: invert(1); }
+}
+
 .tile-label {
   font-size: 0.85rem;
   margin-top: 8px;

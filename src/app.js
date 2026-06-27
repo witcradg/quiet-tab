@@ -49,12 +49,12 @@ function renderLinks() {
     tile.href = link.url;
     tile.className = "tile";
 
-    tile.innerHTML = `
-      <div>
-        <div class="tile-icon">${link.icon || "🔗"}</div>
-        <div class="tile-label">${link.label}</div>
-      </div>
-    `;
+    // ponytail: slug = all lowercase ascii letters; anything else is emoji/text
+    const isSlug = /^[a-z]+$/.test(link.icon || "");
+    const iconHtml = isSlug
+      ? `<img src="./icons/${link.icon}.svg" class="tile-icon" alt="">`
+      : `<div class="tile-icon">${link.icon || "🔗"}</div>`;
+    tile.innerHTML = `<div>${iconHtml}<div class="tile-label">${link.label}</div></div>`;
 
     linkGrid.appendChild(tile);
   }
