@@ -27,7 +27,7 @@ Type a prefix before your query to override the active engine:
 | `cl ` | Claude |
 | `p ` | Perplexity |
 | `ge ` | Gemini |
-| `d ` | DuckDuckGo |
+| `f ` | Feed |
 
 Example: `cl what is a transformer model` opens Claude with that query.
 
