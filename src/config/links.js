@@ -9,5 +9,6 @@ window.QUIET_TAB_CONFIG.links = [
   { label: "Feed", url: "https://news.google.com/foryou", icon: "googlenews" },
   { label: "Workflowy", url: "https://workflowy.com", icon: "workflowy" },
   { label: "Gmail", url: "https://mail.google.com", icon: "gmail" },
-  { label: "Calendar", url: "https://calendar.google.com", icon: "googlecalendar" }
+  { label: "Calendar", url: "https://calendar.google.com", icon: "googlecalendar" },
+  { label: "WhatsApp", url: "https://web.whatsapp.com", icon: "whatsapp" }
 ];
