@@ -19,6 +19,19 @@
     <section id="link-grid" aria-label="Shortcuts"></section>
   </main>
 
+  <dialog id="add-dialog">
+    <form id="add-form" method="dialog">
+      <label>Label <input name="label" required autocomplete="off"></label>
+      <label>URL <input name="url" type="url" required placeholder="https://" autocomplete="off"></label>
+      <label>Icon <input name="icon" placeholder="emoji — blank = site favicon" autocomplete="off"></label>
+      <div class="dialog-actions">
+        <button type="button" id="add-delete" class="danger" hidden>Delete</button>
+        <button type="button" id="add-cancel">Cancel</button>
+        <button type="submit" id="add-submit">Add</button>
+      </div>
+    </form>
+  </dialog>
+
   <script src="./config/settings.js"></script>
   <script src="./config/engines.js"></script>
   <script src="./config/links.js"></script>

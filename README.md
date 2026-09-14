@@ -51,6 +51,20 @@ Edit the files in `src/config/` — no build step required:
 Configuration lives in plain JS files so it is auditable, version-controllable,
 and portable across machines.
 
+### Adding and reordering tiles in the page
+
+Click the `+` tile to add a shortcut (label, URL, optional emoji icon — leave the
+icon blank to use the site's favicon). Drag tiles to reorder them. Right-click a
+tile to edit or delete it.
+
+Once you add or drag, the tile list is saved in the browser's `localStorage`
+and `src/config/links.js` is no longer read. To go back to the config file,
+run this in the browser console:
+
+```js
+localStorage.removeItem("links")
+```
+
 ## Philosophy
 
 quiet-tab is intentionally not a dashboard. A new tab is a moment of intent.

@@ -118,3 +118,53 @@ img.tile-icon {
   margin-top: 8px;
   opacity: 0.75;
 }
+
+.tile-add {
+  font: inherit;
+  font-size: 2rem;
+  background: none;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.tile-add:hover { opacity: 1; }
+
+.tile.dragging { opacity: 0.4; }
+
+#add-dialog {
+  border: 1px solid color-mix(in srgb, CanvasText 14%, transparent);
+  border-radius: var(--radius);
+  background: Canvas;
+  color: CanvasText;
+  padding: 20px;
+  min-width: 320px;
+}
+
+#add-dialog::backdrop { background: rgb(0 0 0 / 0.5); }
+
+#add-form { display: grid; gap: 12px; }
+
+#add-form label { display: grid; gap: 4px; font-size: 0.85rem; }
+
+#add-form input {
+  font: inherit;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+  background: Canvas;
+  color: CanvasText;
+}
+
+.dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+.dialog-actions .danger { margin-right: auto; color: #e5484d; }
+
+.dialog-actions button {
+  font: inherit;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+  background: Canvas;
+  color: CanvasText;
+  cursor: pointer;
+}

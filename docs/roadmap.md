@@ -12,6 +12,7 @@ Items are loose priorities, not commitments. The goal is to stay minimal.
 - `/` to focus search
 - Config split into `settings.js`, `engines.js`, `links.js`
 - README setup and usage docs
+- Add, edit (right-click), delete, and drag tiles in the page; saved in `localStorage`
 
 ## Likely next
 

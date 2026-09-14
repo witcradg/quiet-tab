@@ -1,6 +1,11 @@
 const config = window.QUIET_TAB_CONFIG;
 let activeEngine = config.defaultEngine;
 
+// ponytail: once the user adds or reorders a tile, localStorage owns the list.
+// Reset with: localStorage.removeItem("links")
+let links = JSON.parse(localStorage.getItem("links") || "null") || config.links;
+const saveLinks = () => localStorage.setItem("links", JSON.stringify(links));
+
 const engineRow = document.querySelector("#engine-row");
 const linkGrid = document.querySelector("#link-grid");
 const form = document.querySelector("#search-form");
@@ -41,25 +46,116 @@ function renderEngines() {
   }
 }
 
+function iconHtml(icon) {
+  // ponytail: slug = lowercase letters, optional ".ext" (default .svg); http = remote; anything else is emoji/text
+  if (/^https?:/.test(icon || "")) return `<img src="${icon}" class="tile-icon" alt="">`;
+  if (/^[a-z]+(\.[a-z]+)?$/.test(icon || "")) {
+    const file = icon.includes(".") ? icon : `${icon}.svg`;
+    return `<img src="./icons/${file}" class="tile-icon" alt="">`;
+  }
+  return `<div class="tile-icon">${icon || "🔗"}</div>`;
+}
+
 function renderLinks() {
   linkGrid.innerHTML = "";
 
-  for (const link of config.links) {
+  links.forEach((link, i) => {
     const tile = document.createElement("a");
     tile.href = link.url;
     tile.className = "tile";
-
-    // ponytail: slug = lowercase letters, optional ".ext" (default .svg); anything else is emoji/text
-    const isSlug = /^[a-z]+(\.[a-z]+)?$/.test(link.icon || "");
-    const file = link.icon && link.icon.includes(".") ? link.icon : `${link.icon}.svg`;
-    const iconHtml = isSlug
-      ? `<img src="./icons/${file}" class="tile-icon" alt="">`
-      : `<div class="tile-icon">${link.icon || "🔗"}</div>`;
-    tile.innerHTML = `<div>${iconHtml}<div class="tile-label">${link.label}</div></div>`;
-
+    tile.draggable = true;
+    tile.dataset.index = i;
+    tile.innerHTML = `<div>${iconHtml(link.icon)}<div class="tile-label"></div></div>`;
+    tile.querySelector(".tile-label").textContent = link.label;
+    tile.title = "Right-click to edit or delete";
+    // ponytail: right-click = edit; no hover buttons, no long-press
+    tile.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      openDialog(i);
+    });
     linkGrid.appendChild(tile);
-  }
+  });
+
+  const add = document.createElement("button");
+  add.type = "button";
+  add.className = "tile tile-add";
+  add.title = "Add shortcut";
+  add.textContent = "+";
+  add.addEventListener("click", () => openDialog(null));
+  linkGrid.appendChild(add);
 }
+
+// --- add / edit / delete tile (one dialog; editing = index or null for add) ---
+const addDialog = document.querySelector("#add-dialog");
+const addForm = document.querySelector("#add-form");
+const deleteButton = document.querySelector("#add-delete");
+let editing = null;
+
+function openDialog(index) {
+  editing = index;
+  const link = index === null ? {} : links[index];
+  addForm.label.value = link.label || "";
+  addForm.url.value = link.url || "";
+  addForm.icon.value = link.icon || "";
+  deleteButton.hidden = index === null;
+  document.querySelector("#add-submit").textContent = index === null ? "Add" : "Save";
+  addDialog.showModal();
+}
+
+document.querySelector("#add-cancel").addEventListener("click", () => addDialog.close());
+
+deleteButton.addEventListener("click", () => {
+  links.splice(editing, 1);
+  saveLinks();
+  addDialog.close();
+  renderLinks();
+});
+
+addForm.addEventListener("submit", () => {
+  const data = new FormData(addForm);
+  const url = data.get("url").trim();
+  // ponytail: no icon given → DuckDuckGo favicon service (bigger icons than Google's); needs network
+  const icon = data.get("icon").trim()
+    || `https://icons.duckduckgo.com/ip3/${new URL(url).hostname}.ico`;
+  const link = { label: data.get("label").trim(), url, icon };
+  if (editing === null) links.push(link);
+  else links[editing] = link;
+  saveLinks();
+  renderLinks();
+});
+
+// --- drag to reorder (native HTML5 DnD; tiles move live, order saved on drop) ---
+let dragged = null;
+
+linkGrid.addEventListener("dragstart", (event) => {
+  dragged = event.target.closest("a.tile");
+  if (!dragged) return;
+  event.dataTransfer.effectAllowed = "move";
+  dragged.classList.add("dragging");
+});
+
+linkGrid.addEventListener("dragover", (event) => {
+  const over = event.target.closest("a.tile");
+  if (!dragged || !over || over === dragged) return;
+  event.preventDefault();
+  const r = over.getBoundingClientRect();
+  const before = event.clientX < r.left + r.width / 2;
+  over.parentNode.insertBefore(dragged, before ? over : over.nextSibling);
+});
+
+linkGrid.addEventListener("drop", (event) => event.preventDefault());
+
+linkGrid.addEventListener("dragend", () => {
+  if (!dragged) return;
+  dragged.classList.remove("dragging");
+  const order = [...linkGrid.querySelectorAll("a.tile")].map((t) => links[t.dataset.index]);
+  dragged = null;
+  if (order.some((l, i) => l !== links[i])) {
+    links = order;
+    saveLinks();
+  }
+  renderLinks();
+});
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -90,9 +186,9 @@ document.addEventListener("keydown", (event) => {
 
   if (!event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
   const idx = parseInt(event.key, 10);
-  if (idx >= 1 && idx <= 9 && config.links[idx - 1]) {
+  if (idx >= 1 && idx <= 9 && links[idx - 1]) {
     event.preventDefault();
-    window.location.href = config.links[idx - 1].url;
+    window.location.href = links[idx - 1].url;
   }
 });
 
