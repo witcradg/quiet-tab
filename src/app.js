@@ -49,10 +49,11 @@ function renderLinks() {
     tile.href = link.url;
     tile.className = "tile";
 
-    // ponytail: slug = all lowercase ascii letters; anything else is emoji/text
-    const isSlug = /^[a-z]+$/.test(link.icon || "");
+    // ponytail: slug = lowercase letters, optional ".ext" (default .svg); anything else is emoji/text
+    const isSlug = /^[a-z]+(\.[a-z]+)?$/.test(link.icon || "");
+    const file = link.icon && link.icon.includes(".") ? link.icon : `${link.icon}.svg`;
     const iconHtml = isSlug
-      ? `<img src="./icons/${link.icon}.svg" class="tile-icon" alt="">`
+      ? `<img src="./icons/${file}" class="tile-icon" alt="">`
       : `<div class="tile-icon">${link.icon || "🔗"}</div>`;
     tile.innerHTML = `<div>${iconHtml}<div class="tile-label">${link.label}</div></div>`;
 

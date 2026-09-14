@@ -105,10 +105,12 @@ img.tile-icon {
   width: 2rem;
   height: 2rem;
   display: block;
-}
-
-@media (prefers-color-scheme: dark) {
-  img.tile-icon { filter: invert(1); }
+  /* ponytail: white disc so black logos (GitHub, Vercel, ChatGPT) survive dark mode */
+  box-sizing: content-box;
+  padding: 6px;
+  background: #fff;
+  border-radius: 50%;
+  object-fit: contain;
 }
 
 .tile-label {

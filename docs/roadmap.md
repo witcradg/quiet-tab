@@ -17,7 +17,7 @@ Items are loose priorities, not commitments. The goal is to stay minimal.
 
 - Keyboard number hints on tiles (show `1`–`9` badge on the first nine)
 - Dark/light mode toggle (CSS-only, respects `prefers-color-scheme` already)
-- Favicon fetching for tile icons (Google's favicon service or a local fallback)
+- ~~Favicon fetching for tile icons~~ — done: full-color SVGs from gilbarbara/logos, stored locally
 
 ## Maybe later
 
