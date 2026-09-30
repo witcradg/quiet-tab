@@ -11,5 +11,7 @@ window.QUIET_TAB_CONFIG.links = [
   { label: "Gmail", url: "https://mail.google.com", icon: "gmail" },
   { label: "Calendar", url: "https://calendar.google.com", icon: "googlecalendar" },
   { label: "WhatsApp", url: "https://web.whatsapp.com", icon: "whatsapp" },
-  { label: "Supabase", url: "https://supabase.com/dashboard/org/rbdozudcucgqikmlyali", icon: "supabase" }
+  { label: "Supabase", url: "https://supabase.com/dashboard/org/rbdozudcucgqikmlyali", icon: "supabase" },
+  { label: "YouTube", url: "https://www.youtube.com", icon: "youtube" },
+  { label: "Messages", url: "https://messages.google.com/web", icon: "googlemessages" }
 ];
