@@ -16,6 +16,36 @@ file:///home/you/quiet-tab/src/index.html
 
 No server needed. Everything runs from local files.
 
+### Or serve it on localhost (how Dean's machine runs it)
+
+The new tab page on Dean's machine is `http://localhost:5173/`, served by a systemd
+user service that starts at login and restarts itself:
+
+```ini
+# ~/.config/systemd/user/quiet-tab.service  (not in this repo)
+[Unit]
+Description=quiet-tab start page
+
+[Service]
+ExecStart=/usr/bin/python3 -m http.server 5173 -d src --bind 127.0.0.1
+WorkingDirectory=/home/dean/projects/personal/quiet-tab
+Restart=always
+
+[Install]
+WantedBy=default.target
+```
+
+```bash
+systemctl --user start quiet-tab.service    # stop / restart / status work the same way
+```
+
+If the service is stopped, the new tab page does not load — and a tab left open shows
+old tiles with broken icons for anything added since, because the icons cannot be fetched.
+
+⚠️ Tiles saved in the page (below) are stored per address: the list saved at
+`localhost:5173` is not the one saved at `file://`, so switching between the two shows
+different tiles.
+
 ### Search prefixes
 
 Type a prefix before your query to override the active engine:
@@ -50,6 +80,10 @@ Edit the files in `src/config/` — no build step required:
 
 Configuration lives in plain JS files so it is auditable, version-controllable,
 and portable across machines.
+
+⚠️ **`links.js` is ignored once you have added or dragged a tile in the page** — see the
+next section. On Dean's machine that has happened, so a tile added only to `links.js`
+does not appear. Add it with the `+` tile instead, or add it to the saved list too.
 
 ### Adding and reordering tiles in the page
 
