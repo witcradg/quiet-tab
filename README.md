@@ -19,7 +19,10 @@ No server needed. Everything runs from local files.
 ### Or serve it on localhost (how Dean's machine runs it)
 
 The new tab page on Dean's machine is `http://localhost:5173/`, served by a systemd
-user service that starts at login and restarts itself:
+user service that starts at login and restarts itself. A Claude Code session suggested and
+set this up on 2026-07-23, turning a hand-started `http.server` on 5173 into this service —
+a welcome change (Dean, 2026-09-30). Record: claude-mem observations #7883, #7884, #7886.
+Why 5173 was chosen over `file://` is not recorded.
 
 ```ini
 # ~/.config/systemd/user/quiet-tab.service  (not in this repo)
